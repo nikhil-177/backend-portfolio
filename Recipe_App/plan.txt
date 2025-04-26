@@ -23,4 +23,5 @@ Steps :-
 
 make user register and send him his data  -post -/api/v1/auth/register
 make user login and send him tokens and welcome message -post -/api/v1/auth/login
-make refresh token route for users data safety  -post -/api/v1/auth/refresh-token
+make password hash for data safety
+make access and refresh token route for users data safety  -post -/api/v1/auth/refresh-token
