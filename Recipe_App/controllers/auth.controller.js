@@ -31,7 +31,8 @@ export const loginUser = async (req, res) => {
       });
     }
     // check password
-    if (!(user.password === password)) {
+    const comparedPassword = await user.comparePassword(password);
+    if (!comparedPassword) {
       return res.status(400).json({
         message: 'Invalid Email or Password',
         statusCode: 400,
