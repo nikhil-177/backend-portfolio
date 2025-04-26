@@ -39,12 +39,30 @@ export const loginUser = async (req, res) => {
         success: false,
       });
     } else {
-      return res.status(200).json({
-        message: `Welcome back, ${user.name}`,
-        tokens: [],
-        statusCode: 200,
-        success: true,
-      });
+
+        // generate tokens
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
+
+        // save refresh token in database
+        user.refreshToken = refreshToken
+        await user.save()
+
+
+      return res
+        .cookie('refreshToken', refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'Strict',
+          maxAge: 7 * 24 * 60 * 60 * 1000, 
+        })
+        .status(200)
+        .json({
+          message: `Welcome back, ${user.name}`,
+          accessToken,
+          statusCode: 200,
+          success: true,
+        });
     }
   } catch (error) {
     return res.status(500).json({
