@@ -1,0 +1,21 @@
+for users:-
+register -post
+login -post 
+recipes -get 
+recipes favourite or bookmark -post
+profile -get
+profile -put
+profile -delete
+comment & rate on recipes -post
+comment & rate on recipes -get
+create new recipes -post
+get details about the recipes you created -get
+
+for admins:-
+approve/reject recipes came from users -post
+admin can post recipes immediately not approval needed -post
+recipes data -get
+recipes data -put
+recipes data -delete
+
+
