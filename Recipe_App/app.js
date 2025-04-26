@@ -1,9 +1,12 @@
-import express from 'express'
+import express from 'express';
+import { authRoutes } from './routes/auth.routes.js';
 
-const app = express()
+const app = express();
 
-app.get('/',(req,res)=>{
-    res.send('hello world')
-})
+// middlewares
+app.use(express.json())
 
-export default app
+// authRoutes
+app.use('/api/v1/auth', authRoutes);
+
+export default app;
