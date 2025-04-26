@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema(
   {
     name: String,
-    avatar:String,
+    avatar: String,
     email: String,
     password: String, //store hashed password only
     // users favourite recipes
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema(
     // users created recipes
     createdRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
-    refreshToken:{type:String,default:''}
+    refreshToken: { type: String, default: '' },
   },
   { timestamps: true }
 );
@@ -42,4 +43,19 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign(
+    { id: this._id, role: this.role },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+  );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+  });
+};
+
 export const User = mongoose.model('User', userSchema);
