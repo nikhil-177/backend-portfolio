@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 const userSchema = new mongoose.Schema(
   {
     name: String,
+    avatar:String,
     email: String,
     password: String, //store hashed password only
     // users favourite recipes
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema(
     // users created recipes
     createdRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
+    refreshToken:{type:String,default:''}
   },
   { timestamps: true }
 );
