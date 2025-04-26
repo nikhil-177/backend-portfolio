@@ -1,0 +1,26 @@
+{
+  "name": "recipe_app",
+  "version": "1.0.0",
+  "description": "Backend for a recipe app.",
+  "keywords": [
+    "backend",
+    "node",
+    "express",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/nikhil-177/backend-portfolio#readme",
+  "bugs": {
+    "url": "https://github.com/nikhil-177/backend-portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikhil-177/backend-portfolio.git"
+  },
+  "license": "ISC",
+  "author": "Nikhil Patel",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
