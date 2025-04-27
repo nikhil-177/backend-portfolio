@@ -8,11 +8,12 @@ import {
   registerDataValidation,
   validateLogin,
 } from '../validators/auth.validator.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
 router.post('/register', registerDataValidation, registerUser);
 router.post('/login', validateLogin, loginUser);
-router.post('/logout', logoutUser);
+router.post('/logout',authMiddleware, logoutUser);
 
 export const authRoutes = router;

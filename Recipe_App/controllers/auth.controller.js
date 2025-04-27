@@ -56,7 +56,7 @@ export const loginUser = async (req, res) => {
         })
         .status(200)
         .json({
-          message: `Welcome back, ${user.name}`,
+          message: `Welcome back, ${user.profile.name}`,
           accessToken,
           statusCode: 200,
           success: true,
@@ -72,11 +72,9 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = async (req, res) => {
-  // const {id} = req.user
-  const id = '680dd71955b7851f0d2f184a';
+  const { id } = req.user;
   try {
     const user = await User.findById(id).select('refreshToken');
-    console.log(user);
     if (!user) {
       return res
         .status(404)

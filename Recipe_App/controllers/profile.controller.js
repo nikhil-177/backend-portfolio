@@ -1,8 +1,7 @@
 import { User } from '../models/user.model.js';
 
 export const getUserProfile = async (req, res) => {
-  //   const { id } = req.user;
-  const id = '680dcc6055ee301e827a598c';
+    const { id } = req.user;
   try {
     const user = await User.findById(id).select(
       '-profile.password -favourites -createdRecipes -comments -refreshToken'
@@ -31,8 +30,7 @@ export const getUserProfile = async (req, res) => {
 };
 
 export const updateUserProfile = async (req, res) => {
-  // const { id } = req.user;
-  const id = '680dcc6055ee301e827a598c'; // remove this later
+  const { id } = req.user;
 
   const { name, avatar, email } = req.body;
 
@@ -73,8 +71,7 @@ export const updateUserProfile = async (req, res) => {
 };
 
 export const deleteUserProfile = async (req, res) => {
-  // const { id } = req.user;
-  const id = '680dcc6055ee301e827a598c';
+  const { id } = req.user;
   try {
     const user = await User.findByIdAndDelete(id);
     if (!user) {
