@@ -35,3 +35,4 @@ make user logout -post -api/v1/auth/logout
 make validation checks on user register and login 
 make validation checks on profile update also
 make auth middleware for user to get,update,delete,logout his profile
+make recipe model 
