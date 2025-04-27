@@ -71,3 +71,29 @@ export const updateUserProfile = async (req, res) => {
     });
   }
 };
+
+export const deleteUserProfile = async (req, res) => {
+  // const { id } = req.user;
+  const id = '680dcc6055ee301e827a598c';
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: 'User not found', statusCode: 404, success: false });
+    }
+    return res
+      .status(200)
+      .json({
+        message: 'User deleted successfully',
+        statusCode: 200,
+        success: true,
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
