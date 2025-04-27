@@ -43,7 +43,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = function (enteredPassword) {
-  return bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.profile.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
