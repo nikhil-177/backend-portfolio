@@ -4,10 +4,12 @@ import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema(
   {
-    name: String,
-    avatar: String,
-    email: String,
-    password: String, //store hashed password only
+    profile: {
+      name: String,
+      avatar: String,
+      email: String,
+      password: String, //store hashed password only
+    },
     // users favourite recipes
     favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
     // users comment on other recipes
@@ -29,11 +31,11 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('profile.password')) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.profile.password = await bcrypt.hash(this.profile.password, salt);
     next();
   } catch (error) {
     next(error);
