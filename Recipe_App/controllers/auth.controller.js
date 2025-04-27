@@ -3,7 +3,7 @@ import { User } from '../models/user.model.js';
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const user = await User.create({ profile:{name, email, password }});
+    const user = await User.create({ profile: { name, email, password } });
     return res.status(200).json({
       data: user,
       message: 'User created successfully',
@@ -22,7 +22,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ profile:{email} });
+    const user = await User.findOne({ 'profile.email': email });
     if (user === null) {
       return res.status(400).json({
         message: 'Invalid Email or Password',
@@ -39,22 +39,20 @@ export const loginUser = async (req, res) => {
         success: false,
       });
     } else {
+      // generate tokens
+      const accessToken = user.generateAccessToken();
+      const refreshToken = user.generateRefreshToken();
 
-        // generate tokens
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
-
-        // save refresh token in database
-        user.refreshToken = refreshToken
-        await user.save()
-
+      // save refresh token in database
+      user.refreshToken = refreshToken;
+      await user.save();
 
       return res
         .cookie('refreshToken', refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: 'Strict',
-          maxAge: 7 * 24 * 60 * 60 * 1000, 
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .status(200)
         .json({
@@ -64,6 +62,45 @@ export const loginUser = async (req, res) => {
           success: true,
         });
     }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  // const {id} = req.user
+  const id = '680dd71955b7851f0d2f184a';
+  try {
+    const user = await User.findById(id).select('refreshToken');
+    console.log(user);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: 'User not found', statusCode: 404, success: false });
+    }
+
+    // remove token from db
+    user.refreshToken = '';
+    await user.save();
+
+    // clear cookie and send response
+    return res
+      .clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        message: 'You logged out successfully',
+        statusCode: 200,
+        success: true,
+      });
   } catch (error) {
     return res.status(500).json({
       message: error.message || 'Something went wrong',
