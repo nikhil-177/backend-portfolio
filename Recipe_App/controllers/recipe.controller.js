@@ -72,10 +72,29 @@ export const deleteRecipe = async (req, res) => {
 
   try {
     await Recipe.findByIdAndDelete(id);
+    return res.status(200).json({
+      message: 'Recipe deleted successfully',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const getAllRecipes = async (req, res) => {
+  try {
+    const recipes = await Recipe.find();
     return res
       .status(200)
       .json({
-        message: 'Recipe deleted successfully',
+        totalRecipes: recipes.length,
+        data: recipes,
+        message: 'Recipes fetched successfully',
         statusCode: 200,
         success: true,
       });
