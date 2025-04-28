@@ -54,6 +54,14 @@ const recipeSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    comments: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -61,10 +69,6 @@ const recipeSchema = new mongoose.Schema(
     updatedAt: {
       type: Date,
       default: Date.now,
-    },
-    comments: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
     },
   },
   {
