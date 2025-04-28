@@ -7,7 +7,10 @@ import {
   updateRecipe,
 } from '../controllers/recipe.controller.js';
 import { isAdmin } from '../middlewares/adminAuth.middleware.js';
-import { getRecipesBasedOnStatus } from '../controllers/admin.controller.js';
+import {
+  getRecipesBasedOnStatus,
+  updateRecipeStatus,
+} from '../controllers/admin.controller.js';
 
 const router = express.Router();
 
@@ -18,5 +21,6 @@ router.get('/', getAllRecipes);
 router.get('/:id', getRecipe);
 
 router.get('/admin/:status', isAdmin, getRecipesBasedOnStatus);
+router.patch('/admin/:status', isAdmin, updateRecipeStatus);
 
 export const recipeRoutes = router;
