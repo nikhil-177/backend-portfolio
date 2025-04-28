@@ -36,3 +36,10 @@ make validation checks on user register and login
 make validation checks on profile update also
 make auth middleware for user to get,update,delete,logout his profile
 make recipe model 
+
+Day-3 ----------
+make admin login route but only approve access if email/password correct and role is admin -post -api/v1/auth/login
+make route where admin can create recipes -post -api/v1/recipes/create -admin only route
+make route where admin can update recipes -put -api/v1/recipes/update/:id -admin only route
+make route to delete recipes -delete -api/v1/recipes/delete/:id -admin only route
+get all recipes -get -api/v1/recipes

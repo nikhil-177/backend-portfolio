@@ -56,7 +56,7 @@ export const loginUser = async (req, res) => {
         })
         .status(200)
         .json({
-          message: `Welcome back, ${user.profile.name}`,
+          message: `Welcome back, ${user.role === "admin" ? "Admin" : user.profile.name}`,
           accessToken,
           statusCode: 200,
           success: true,
