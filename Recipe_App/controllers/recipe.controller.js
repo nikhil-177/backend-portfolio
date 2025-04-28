@@ -1,4 +1,5 @@
 import { Recipe } from '../models/recipe.model.js';
+import { User } from '../models/user.model.js';
 
 export const createRecipe = async (req, res) => {
   const { id,role } = req.user;
@@ -31,10 +32,13 @@ export const createRecipe = async (req, res) => {
       createdBy: id,
       status
     });
-
-    return res.status(200).json({
+// save the recipe in users db
+    const user = await User.findByIdAndUpdate(id,{$set:{createdRecipes:recipe._id}}).select("role")
+    
+    let message = user.role === "admin" ? "Recipe created successfully" : "Recipe is in pending for now"
+    res.status(200).json({
       data: recipe,
-      message: 'Recipe created successfully',
+      message ,
       statusCode: 200,
       success: true,
     });
