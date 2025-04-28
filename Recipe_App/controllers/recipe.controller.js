@@ -1,7 +1,8 @@
 import { Recipe } from '../models/recipe.model.js';
 
 export const createRecipe = async (req, res) => {
-  const { id } = req.user;
+  const { id,role } = req.user;
+  
   const {
     name,
     description,
@@ -13,6 +14,10 @@ export const createRecipe = async (req, res) => {
     servings,
   } = req.body;
 
+  let status = "pending"
+  if(role === "admin"){
+    status = "approved" 
+  } 
   try {
     const recipe = await Recipe.create({
       name,
@@ -24,6 +29,7 @@ export const createRecipe = async (req, res) => {
       cookingTime,
       servings,
       createdBy: id,
+      status
     });
 
     return res.status(200).json({
