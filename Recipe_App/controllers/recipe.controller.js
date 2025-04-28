@@ -89,12 +89,32 @@ export const deleteRecipe = async (req, res) => {
 export const getAllRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find();
+    return res.status(200).json({
+      totalRecipes: recipes.length,
+      data: recipes,
+      message: 'Recipes fetched successfully',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const getRecipe = async (req, res) => {
+  const id = req.params?.id;
+  try {
+    const recipe = await Recipe.findById(id);
+
     return res
       .status(200)
       .json({
-        totalRecipes: recipes.length,
-        data: recipes,
-        message: 'Recipes fetched successfully',
+        data: recipe,
+        message: 'Recipe fetched successfully',
         statusCode: 200,
         success: true,
       });
@@ -106,18 +126,3 @@ export const getAllRecipes = async (req, res) => {
     });
   }
 };
-
-export const getRecipe = async (req,res) => {
-    const id = req.params?.id
-    try {
-        const recipe = await Recipe.findById(id)
-
-        return res.status(200).json({data:recipe,message:"Recipe fetched successfully",statusCode:200,success:true})
-    } catch (error) {
-          return res.status(500).json({
-            message: error.message || 'Something went wrong',
-            statusCode: 500,
-            success: false,
-          });
-    }
-}

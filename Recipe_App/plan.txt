@@ -42,4 +42,7 @@ make admin login route but only approve access if email/password correct and rol
 make route where admin can create recipes -post -api/v1/recipes/create -admin only route
 make route where admin can update recipes -put -api/v1/recipes/update/:id -admin only route
 make route to delete recipes -delete -api/v1/recipes/delete/:id -admin only route
-get all recipes -get -api/v1/recipes
+get all recipes make sure th approved ones only come no pending ones -get -api/v1/recipes
+get specific one recipe -get -api/v1/recipes/:id
+get recipes been trying to create by users in admin and he approves if pass or fail -get -api/v1/recipes/:status -admin only route
+
