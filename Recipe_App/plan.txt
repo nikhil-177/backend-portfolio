@@ -45,4 +45,4 @@ make route to delete recipes -delete -api/v1/recipes/delete/:id -admin only rout
 get all recipes make sure th approved ones only come no pending ones -get -api/v1/recipes
 get specific one recipe -get -api/v1/recipes/:id
 get recipes been trying to create by users in admin and he approves if pass or fail -get -api/v1/recipes/:status -admin only route
-
+get user created recipe -get -api/v1/users/createdRecipes
