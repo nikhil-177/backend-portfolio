@@ -26,16 +26,42 @@ export const createRecipe = async (req, res) => {
       createdBy: id,
     });
 
+    return res.status(200).json({
+      data: recipe,
+      message: 'Recipe created successfully',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const updateRecipe = async (req, res) => {
+  const { ...updateData } = req.body;
+  const id = req.params?.id;
+
+  try {
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { runValidators: true, new: true }
+    );
+
     return res
       .status(200)
       .json({
-        data: recipe,
-        message: 'Recipe created successfully',
+        data: updatedRecipe,
+        message: 'Recipe updated successfully',
         statusCode: 200,
         success: true,
       });
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({
         message: error.message || 'Something went wrong',
