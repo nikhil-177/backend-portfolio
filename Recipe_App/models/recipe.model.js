@@ -59,8 +59,9 @@ const recipeSchema = new mongoose.Schema(
       ref: 'Comment',
     },
     isApproved: {
-      type: Boolean,
-      default: false,
+      type: String,
+      enum:["pending","approved","rejected"],
+      default: "pending",
     },
     createdAt: {
       type: Date,
