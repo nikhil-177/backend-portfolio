@@ -46,3 +46,4 @@ get all recipes make sure th approved ones only come no pending ones -get -api/v
 get specific one recipe -get -api/v1/recipes/:id
 get recipes been trying to create by users in admin and he approves if pass or fail -get -api/v1/recipes/:status -admin only route
 get user created recipe -get -api/v1/users/createdRecipes
+users can post comments on certain recipes -post -/api/v1/comments/post

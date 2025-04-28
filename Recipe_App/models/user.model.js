@@ -16,10 +16,7 @@ const userSchema = new mongoose.Schema(
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Recipe',
-        ratings: { type: Number, min: 1, max: 5 },
-        comment: String,
-        createdAt: { type: Date, default: Date.now },
+        ref: 'Comment',
       },
     ],
     // users created recipes
