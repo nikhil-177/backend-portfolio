@@ -52,21 +52,38 @@ export const updateRecipe = async (req, res) => {
       { runValidators: true, new: true }
     );
 
+    return res.status(200).json({
+      data: updatedRecipe,
+      message: 'Recipe updated successfully',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const deleteRecipe = async (req, res) => {
+  const id = req.params?.id;
+
+  try {
+    await Recipe.findByIdAndDelete(id);
     return res
       .status(200)
       .json({
-        data: updatedRecipe,
-        message: 'Recipe updated successfully',
+        message: 'Recipe deleted successfully',
         statusCode: 200,
         success: true,
       });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: error.message || 'Something went wrong',
-        statusCode: 500,
-        success: false,
-      });
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
   }
 };
