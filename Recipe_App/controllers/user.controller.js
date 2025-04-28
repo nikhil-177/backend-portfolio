@@ -67,7 +67,7 @@ export const postUsersComment = async (req, res) => {
       await Recipe.findByIdAndUpdate(recipeId, {
         $set: { comments: newComment._id },
       });
-      await User.findByIdAndUpdate(id, { $push: { comments:newComment._id } });
+      await User.findByIdAndUpdate(id, { $push: { comments: newComment._id } });
       return res.status(200).json({
         message: 'Comment added successfully',
         statusCode: 200,
@@ -85,23 +85,37 @@ export const postUsersComment = async (req, res) => {
         await User.findByIdAndUpdate(id, {
           $push: { comments: searchComment._id },
         });
-        return res
-          .status(200)
-          .json({
-            message: 'Comment added successfully',
-            statusCode: 200,
-            success: true,
-          });
+        return res.status(200).json({
+          message: 'Comment added successfully',
+          statusCode: 200,
+          success: true,
+        });
       } else {
-        return res
-          .status(500)
-          .json({
-            message:
-              'Cannot add more than 1 comment you already have in it here',
-            statusCode: 500,
-            success: false,
-          });
+        return res.status(500).json({
+          message: 'Cannot add more than 1 comment you already have in it here',
+          statusCode: 500,
+          success: false,
+        });
       }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const getUserCommentsOnRecipes = async (req, res) => {
+  const { id } = req.user;
+  try {
+    const comments = await Comment.find({'users.user':id}).populate('recipe');
+    if(comments.length === 0){
+        return res.status(500).json({message:"No comments found",statusCode:500,success:false})
+    }else{
+        return res.status(200).json({data:comments,message:"Comments fetched successfully",statusCode:200,success:true})
     }
   } catch (error) {
     console.log(error);
