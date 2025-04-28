@@ -67,7 +67,7 @@ export const postUsersComment = async (req, res) => {
       await Recipe.findByIdAndUpdate(recipeId, {
         $set: { comments: newComment._id },
       });
-      await User.findByIdAndUpdate(id, { $set: { comments: newComment._id } });
+      await User.findByIdAndUpdate(id, { $push: { comments:newComment._id } });
       return res.status(200).json({
         message: 'Comment added successfully',
         statusCode: 200,
@@ -83,7 +83,7 @@ export const postUsersComment = async (req, res) => {
         await searchComment.save();
         //   save comment id in user db
         await User.findByIdAndUpdate(id, {
-          $set: { comments: searchComment._id },
+          $push: { comments: searchComment._id },
         });
         return res
           .status(200)
