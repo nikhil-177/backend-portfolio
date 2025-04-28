@@ -88,7 +88,7 @@ export const deleteRecipe = async (req, res) => {
 
 export const getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find();
+    const recipes = await Recipe.find({status:"approved"});
     return res.status(200).json({
       totalRecipes: recipes.length,
       data: recipes,
