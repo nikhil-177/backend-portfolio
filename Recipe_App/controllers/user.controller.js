@@ -111,14 +111,130 @@ export const postUsersComment = async (req, res) => {
 export const getUserCommentsOnRecipes = async (req, res) => {
   const { id } = req.user;
   try {
-    const comments = await Comment.find({'users.user':id}).populate('recipe');
-    if(comments.length === 0){
-        return res.status(500).json({message:"No comments found",statusCode:500,success:false})
-    }else{
-        return res.status(200).json({data:comments,message:"Comments fetched successfully",statusCode:200,success:true})
+    const comments = await Comment.find({ 'users.user': id }).populate(
+      'recipe'
+    );
+    if (comments.length === 0) {
+      return res.status(500).json({
+        message: 'No comments found',
+        statusCode: 500,
+        success: false,
+      });
+    } else {
+      return res.status(200).json({
+        data: comments,
+        message: 'Comments fetched successfully',
+        statusCode: 200,
+        success: true,
+      });
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const addUsersFavouriteRecipe = async (req, res) => {
+  const { id } = req.user;
+  const recipeId = req.params?.recipeId;
+  if (!recipeId) {
+    return res.status(400).json({
+      message: 'recipe id must be provided',
+      statusCode: 400,
+      success: false,
+    });
+  }
+
+  const recipe = await Recipe.findById(id);
+  if (!recipe) {
+    return res
+      .status(400)
+      .json({ message: 'Invalid recipe id', statusCode: 400, success: false });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(id, {
+      $push: { favourites: recipeId },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid user id', statusCode: 400, success: false });
+    }
+    return res
+      .status(200)
+      .json({ message: 'Added to favourites', statusCode: 200, success: true });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const getUsersFavouriteRecipes = async (req, res) => {
+  const { id } = req.user;
+  try {
+    const favouriteRecipes = await User.findById(id)
+      .select('favourites')
+      .populate('favourites');
+    if (!favouriteRecipes) {
+      return res.status(400).json({
+        message: 'Invalid user id or not provided',
+        statusCode: 400,
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      data: favouriteRecipes,
+      message: 'Recipes fetched successfully',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Something went wrong',
+      statusCode: 500,
+      success: false,
+    });
+  }
+};
+
+export const removeUsersFavouriteRecipe = async (req, res) => {
+  const { id } = req.user;
+  const recipeId = req.params?.recipeId;
+
+  if (!recipeId) {
+    return res.status(400).json({
+      message: 'recipe id must be provided',
+      statusCode: 400,
+      success: false,
+    });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(id, {
+      $pop: { favourites: recipeId },
+    });
+    if (!favouriteRecipes) {
+      return res.status(400).json({
+        message: 'Invalid user id or not provided',
+        statusCode: 400,
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: 'Recipe removed from favourites',
+      statusCode: 200,
+      success: true,
+    });
+  } catch (error) {
     return res.status(500).json({
       message: error.message || 'Something went wrong',
       statusCode: 500,

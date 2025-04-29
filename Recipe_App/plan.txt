@@ -47,4 +47,7 @@ get specific one recipe -get -api/v1/recipes/:id
 get recipes been trying to create by users in admin and he approves if pass or fail -get -api/v1/recipes/:status -admin only route
 get user created recipe -get -api/v1/users/createdRecipes
 users can post comments on certain recipes -post -/api/v1/users/comments/post
-users can get their comments -get -/api/users/comments
+users can get their comments -get -/api/v1//users/comments
+users can add recipes to their favourites -patch -/api/v1/users/favourites/:recipeId
+users can get their favourite recipes -get -/api/v1/users/favourites
+users can remove their favouritet recipes -patch -/api/v1/users/favourites/remove/:recipeId
