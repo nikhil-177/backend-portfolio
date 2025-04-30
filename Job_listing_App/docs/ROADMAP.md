@@ -57,11 +57,11 @@ A roadmap or a path to go through making the app. It's written for personal use 
 ---
 ### Phases
 
-#### Initialize project & Setup
-- Initialize backend (npm init -y)
-- server setup 
-- Database Connection
-- Install required packages 
+#### Initialize project & Setup 
+- ✅Initialize backend (npm init -y)
+- ✅server setup 
+- ✅Database Connection
+- ✅Install required packages 
 
 #### Create models needed 
 - job model 
