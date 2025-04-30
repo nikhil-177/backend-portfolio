@@ -64,9 +64,9 @@ A roadmap or a path to go through making the app. It's written for personal use 
 - ✅Install required packages 
 
 #### Create models needed 
-- job model 
-- user model
-- application model
+- ✅job model 
+- ✅user model
+- ✅application model
 
 #### Deal with Auth/Data security
 - Make auth related routes like
